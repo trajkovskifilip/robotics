@@ -6,6 +6,7 @@ import time
 import numpy as np
 import string
 from lib_robotis import *
+from robotics.msg import Location
 from sensor_msgs.msg import Image
 
 ser = serial.Serial('COM4', 9600)
@@ -104,7 +105,6 @@ def goToRest():
     s3.move_angle(math.radians(0))
 
 
-
 def goToTrash():
     theta1 = 60
     theta2 = 45
@@ -120,11 +120,10 @@ def goToTrash():
     s7.move_angle(math.radians(45), blocking=False)
 
 
-
-
 def decision_node():
     rospy.init_node('decision_node')
-    rospy.Subscriber("location", Image, callback)
+    rospy.Subscriber("location", Location, callback)
     rospy.spin()
+
 if __name__ == "__main__":
     decision_node()

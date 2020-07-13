@@ -4,6 +4,7 @@ import cv2
 import time
 from sensor_msgs.msg import Image
 from cv_bridge import CvBridge, CvBridgeError
+from robotics.msg import Location
 import cv2.cv as cv
 import numpy as np
 import imutils
@@ -12,8 +13,9 @@ bridge = CvBridge()
 
 def callback(img_msg):
     global bridge
-    whiteLower = (0, 0, 0)
-    whiteUpper = (0, 0, 255)
+    pub = rospy.Publisher("location", Location)
+    whiteLower = (158, 136, 155)
+    whiteUpper = (255, 255, 255)
 
     # grab the current image
     image = None
@@ -51,14 +53,8 @@ def callback(img_msg):
         M = cv2.moments(c)
         center = (int(M["m10"] / M["m00"]), int(M["m01"] / M["m00"]))
 
-        # only proceed if the radius meets a minimum size
-        if radius > 10:
-            # draw the circle and centroid on the frame,
-            # then update the list of tracked points
-            cv2.circle(frame, (int(x), int(y)), int(radius), (0, 255, 255), 2)
-            cv2.circle(frame, center, 5, (0, 0, 255), -1)
-
-        return center
+        msg = Location(x, y)
+        pub.publish(msg)
 
 
 def image_processing_node():
