@@ -15,11 +15,11 @@ dyn = USB2Dynamixel_Device('COM3')
 # find_servos(dyn)
 
 s0 = Robotis_Servo(dyn, 8)  # base
-s2 = Robotis_Servo(dyn, 2)  # shoulder,positive up
+s2 = Robotis_Servo(dyn, 2)  # shoulder
 s3 = Robotis_Servo(dyn, 3)  # wrist
 s7 = Robotis_Servo(dyn, 7)  # gripper
 s5 = Robotis_Servo(dyn, 5)  # elbow
-s6 = Robotis_Servo(dyn, 6)  # shoulder,negative up
+s6 = Robotis_Servo(dyn, 6)  # shoulder
 
 RADIANS = 0
 DEGREES = 1
@@ -30,14 +30,11 @@ l2 = 19.5  # length of link 2
 def callback(data):
     x = data[0]
     y = data[1]
+    
     goTo(invKin(x,y))
-
-    goToRest()
-
     time.sleep(1)
-
     goToTrash()
-
+    time.sleep(1)
     goToRest()
 
 def invKin(x, y, angleMode=DEGREES):
@@ -60,8 +57,6 @@ def invKin(x, y, angleMode=DEGREES):
     term1 = ((1 - term2 ** 2) ** 0.5) * -1
     # calculate th2
     th2 = math.atan2(term1, term2)
-    # optional line. Comment this one out if you
-    # notice any problems
     th2 = -1 * th2
 
     # Stuff for calculating th2
