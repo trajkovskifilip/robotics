@@ -7,19 +7,18 @@ import numpy as np
 import string
 from lib_robotis import *
 from robotics.msg import Location
-from sensor_msgs.msg import Image
 
 ser = serial.Serial('COM4', 9600)
 
 dyn = USB2Dynamixel_Device('COM3')
 # find_servos(dyn)
 
-s0 = Robotis_Servo(dyn, 8)  # base
-s2 = Robotis_Servo(dyn, 2)  # shoulder
-s3 = Robotis_Servo(dyn, 3)  # wrist
-s7 = Robotis_Servo(dyn, 7)  # gripper
-s5 = Robotis_Servo(dyn, 5)  # elbow
-s6 = Robotis_Servo(dyn, 6)  # shoulder
+s1 = Robotis_Servo(dyn, 7)  # bottom
+s2 = Robotis_Servo(dyn, 6)  # first joint
+s3 = Robotis_Servo(dyn, 5)  # second joint
+s4 = Robotis_Servo(dyn, 4)  # third joint
+s5 = Robotis_Servo(dyn, 3)  # rotation
+s6 = Robotis_Servo(dyn, 2)  # grasp
 
 RADIANS = 0
 DEGREES = 1
@@ -91,7 +90,7 @@ def goTo(arrayXY):
 def goToRest():
     theta1 = 95
     theta2 = 0
-    s7.move_angle(math.radians(90), blocking=False)
+    s4.move_angle(math.radians(90), blocking=False)
     s5.move_angle(math.radians(theta2), blocking=False)
     time.sleep(0.5)
     s2.move_angle(math.radians(theta1), blocking=False)
@@ -103,16 +102,16 @@ def goToRest():
 def goToTrash():
     theta1 = 60
     theta2 = 45
-    s0.move_angle(math.radians(-90), blocking=False)
+    s1.move_angle(math.radians(-90), blocking=False)
     time.sleep(0.5)
-    s7.move_angle(math.radians(45), blocking=False)
+    s4.move_angle(math.radians(45), blocking=False)
     s5.move_angle(math.radians(theta2), blocking=False)
     time.sleep(0.5)
     s2.move_angle(math.radians(theta1), blocking=False)
     s6.move_angle(math.radians(-theta1), blocking=True)
     s3.move_angle(math.radians(np.absolute(theta1 - theta2)))
     time.sleep(0.5)
-    s7.move_angle(math.radians(45), blocking=False)
+    s4.move_angle(math.radians(45), blocking=False)
 
 
 def decision_node():
