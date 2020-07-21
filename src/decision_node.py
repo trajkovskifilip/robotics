@@ -9,16 +9,14 @@ from lib_robotis import *
 from robotics.msg import Location
 
 ser = serial.Serial('COM4', 9600)
-
-dyn = USB2Dynamixel_Device('COM3')
 # find_servos(dyn)
 
-s1 = Robotis_Servo(dyn, 7)  # bottom
-s2 = Robotis_Servo(dyn, 6)  # first joint
-s3 = Robotis_Servo(dyn, 5)  # second joint
-s4 = Robotis_Servo(dyn, 4)  # third joint
-s5 = Robotis_Servo(dyn, 3)  # rotation
-s6 = Robotis_Servo(dyn, 2)  # grasp
+s1 = Robotis_Servo(ser, 7)  # bottom
+s2 = Robotis_Servo(ser, 6)  # first joint
+s3 = Robotis_Servo(ser, 5)  # second joint
+s4 = Robotis_Servo(ser, 4)  # third joint
+s5 = Robotis_Servo(ser, 3)  # rotation
+s6 = Robotis_Servo(ser, 2)  # grasp
 
 RADIANS = 0
 DEGREES = 1
